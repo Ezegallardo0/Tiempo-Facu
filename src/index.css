@@ -1,28 +1,57 @@
 :root {
-  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-hand: 'Caveat', cursive, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Colors */
-  --bg-dark: #0a0b10;
-  --bg-card: rgba(22, 24, 38, 0.7);
-  --bg-card-hover: rgba(30, 34, 55, 0.85);
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(147, 51, 234, 0.4);
+  /* Cozy Pastel Palette - Personal & Warm Student Aesthetic */
+  --bg-cream: #faf7f2;
+  --bg-canvas: #f5f1eb;
+  --bg-white: #ffffff;
+  --bg-card: #ffffff;
 
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  /* Soft Text Colors */
+  --text-main: #232733;
+  --text-secondary: #5a6072;
+  --text-muted: #83899b;
+  --text-dim: #b0b5c4;
 
-  --accent-purple: #a855f7;
-  --accent-cyan: #06b6d4;
-  --accent-pink: #ec4899;
-  --accent-emerald: #10b981;
+  /* Pastel Color Palette */
+  --pastel-lavender-bg: #f2eefa;
+  --pastel-lavender-border: #ded5f7;
+  --pastel-lavender-text: #603bb8;
 
-  --gradient-primary: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
-  --gradient-glow: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
-  --gradient-text: linear-gradient(135deg, #ffffff 20%, #a855f7 60%, #38bdf8 100%);
+  --pastel-mint-bg: #edf8f1;
+  --pastel-mint-border: #c8edd4;
+  --pastel-mint-text: #21733b;
 
-  color-scheme: dark;
+  --pastel-yellow-bg: #fef8e2;
+  --pastel-yellow-border: #faeab0;
+  --pastel-yellow-text: #966700;
+
+  --pastel-peach-bg: #fdf1ed;
+  --pastel-peach-border: #fad8cd;
+  --pastel-peach-text: #b84328;
+
+  --pastel-sky-bg: #eef6fd;
+  --pastel-sky-border: #cee5fa;
+  --pastel-sky-text: #1b689c;
+
+  /* Primary Accent - Warm terracotta / soft plum */
+  --primary: #5850ec;
+  --primary-hover: #453dc5;
+  --primary-soft: #eeedfc;
+  --primary-border: #d4d1f9;
+
+  --secondary-accent: #e76f51;
+
+  /* Borders & Shadows */
+  --border-light: rgba(40, 48, 68, 0.08);
+  --border-medium: rgba(40, 48, 68, 0.14);
+  --shadow-subtle: 0 4px 20px -2px rgba(40, 48, 68, 0.05);
+  --shadow-card: 0 10px 30px -4px rgba(40, 48, 68, 0.08);
+  --shadow-float: 0 20px 45px -8px rgba(40, 48, 68, 0.12);
+
+  color-scheme: light;
 }
 
 * {
@@ -31,18 +60,25 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-main);
-  background-color: var(--bg-dark);
-  color: var(--text-primary);
+  background-color: var(--bg-cream);
+  color: var(--text-main);
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+  /* Soft notebook paper texture / warm ambient feel */
   background-image: 
-    radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 85% 65%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 50% 90%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+    radial-gradient(circle at 10% 15%, rgba(242, 238, 250, 0.8) 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(254, 248, 226, 0.9) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(237, 248, 241, 0.8) 0%, transparent 45%),
+    radial-gradient(circle at 15% 85%, rgba(253, 241, 237, 0.8) 0%, transparent 45%);
   background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {
@@ -61,4 +97,60 @@ button {
   cursor: pointer;
   border: none;
   background: none;
+}
+
+/* Handwritten font utility */
+.font-hand {
+  font-family: var(--font-hand);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Pastel Highlighter Marker Effect */
+.highlighter-yellow {
+  background: linear-gradient(120deg, rgba(254, 240, 138, 0.8) 0%, rgba(254, 240, 138, 0.8) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 40%;
+  background-position: 0 85%;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.highlighter-mint {
+  background: linear-gradient(120deg, rgba(187, 247, 208, 0.8) 0%, rgba(187, 247, 208, 0.8) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 40%;
+  background-position: 0 85%;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.highlighter-pink {
+  background: linear-gradient(120deg, rgba(254, 205, 211, 0.8) 0%, rgba(254, 205, 211, 0.8) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 40%;
+  background-position: 0 85%;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(1.5deg); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+  animation: floatGentle 5s ease-in-out infinite;
 }

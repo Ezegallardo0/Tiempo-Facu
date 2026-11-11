@@ -1,55 +1,53 @@
-# TiempoFacu 🎓 — Landing Page & Organizador Universitario
+# TiempoFacu 🎓 — Landing Page, Autenticación y Contenido Protegido
 
-Landing page interactiva, moderna y de alto impacto para **TiempoFacu**, el organizador integral de cursada, exámenes, tareas y cálculo de notas de promoción para estudiantes de la facultad.
-
----
-
-## 🚀 Características de la Landing Page
-
-- **Hero con Conversión Optimizada**: Propuesta de valor clara, prueba social con más de 52.000 estudiantes y métricas verificadas.
-- **Showcase Interactivo de la App**:
-  - 📅 **Horario Semanal**: Tarjetas de cursada por comisiones, horarios, aulas y alertas de asistencia.
-  - 🎯 **Parciales & Entregas**: Cuenta regresiva en días reales, badges de urgencia, temarios clave y barra de repaso.
-  - 📊 **Panel de Avance**: Promedio con/sin aplazos y porcentaje de avance de la carrera.
-- **Simulador Interactivo de Notas & Promoción**:
-  - Permite ingresar la nota del 1° parcial y TPs.
-  - Calcula en tiempo real la nota requerida en el 2° parcial para promocionar sin rendir final o para regularizar la cursada.
-  - Soporta ponderaciones 50/50 y 40/40/20 con TPs.
-- **Organizador de Tareas & TPs en Vivo**:
-  - Filtro por materias.
-  - Creación dinámica de tareas con nivel de prioridad.
-  - Checkbox interactivo para marcar como completada y barra de progreso semanal.
-- **Grilla de Beneficios & Soluciones**:
-  - Detector de solapamiento de comisiones.
-  - Notificaciones anti-pánico previas al cierre de campus (Moodle, Blackboard, SIU Guaraní).
-  - Coordinador de TPs grupales sin caos de WhatsApp.
-  - Mapa interactivo de correlativas y modo 100% offline.
-- **Planes & Precios**:
-  - Selector mensual / cuatrimestral con 30% OFF.
-  - Plan Estudiante Libre ($0), Promoción Directa y Grupo de Estudio.
-- **Preguntas Frecuentes (FAQ)** en acordeón interactivo.
-- **Modal de Registro & Autenticación** funcional con feedback inmediato.
+Organizador integral y moderno para la vida universitaria y la gestión de tareas, con diseño cálido y colores pasteles (lavanda, menta, manteca, durazno y cielo).
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## 🚀 Nuevas Funcionalidades: Registro, Login y Contenido Protegido
+
+### 1. 📝 Página de Registro (`#registro`)
+- Registro de estudiante con Nombre, Universidad (UBA, UTN, UNC, UNLP, ITBA, etc.), Carrera, Cuatrimestre, Email y Contraseña.
+- Botón de ver/ocultar contraseña.
+- Acceso directo con cuenta demo en 1 solo clic.
+- Validación de contraseñas y persistencia de cuentas registradas en `localStorage`.
+
+### 2. 🔑 Página de Login (`#login`)
+- Inicio de sesión con correo y contraseña.
+- Botón *"Entrar con Demo"* para probar la app sin esperas (cuenta preconfigurada: `demo@estudiante.edu` / `password123`).
+- Opción de "Recordarme" y enlaces para recuperar o registrarse.
+
+### 3. 🔒 Contenido Protegido (Dashboard del Estudiante - `#dashboard`)
+- **Control de Acceso (Gatekeeper)**: Si un usuario no autenticado intenta ingresar a `#dashboard`, se bloquea el acceso mostrando la pantalla de protección con candado y opciones para identificarse.
+- **Panel Privado del Estudiante**:
+  - **Perfil Universitario**: Saludo personalizado con nombre, avatar, universidad, carrera y cuatrimestre actual.
+  - 📅 **Mi Horario Semanal**: Visualizador de cursada con filtro por día, botón modal para **Agregar Materia** (nombre, horario, aula, cátedra y color pastel) y botón para eliminarla.
+  - 📝 **Mis Tareas & Entregas**: Gestor privado de pendientes con prioridades (Alta, Media, Baja), checkboxes interactivos y contador de avance.
+  - 🎓 **Notas & Promedios en Vivo**: Tabla interactiva donde el estudiante ingresa notas de 1° Parcial, 2° Parcial y TPs, calculando en tiempo real el promedio y mostrando el estado de cursada (*Promocionada*, *Regular a Final*, *Recuperatorio*).
+  - 📌 **Pizarra de Post-its**: Tablero de notas adhesivas con colores pasteles y tipografía manuscrita (*Caveat*) para no olvidar trámites ni avisos de la facultad.
+  - **Persistencia en LocalStorage**: Todo cambio que hace el estudiante queda guardado en su navegador.
+
+---
+
+## 🛠️ Tecnologías
 
 - **React 19**
 - **Vite 8**
-- **Modern CSS**: Variables semánticas, Glassmorphism, Neumorphism y animaciones fluidas
-- **Iconografía SVG artesanal optimizada**: Cero dependencias externas pesadas
+- **AuthContext** (Gestión de sesión, persistencia y estado)
+- **CSS Pastel & Paper Aesthetic** (Variables CSS nativas, sin dependencias pesadas)
+- **Tipografías**: *Plus Jakarta Sans* y *Caveat* (manuscrita)
 
 ---
 
-## 💻 Comandos de Ejecución
+## 💻 Comandos
 
 ```bash
 # Iniciar servidor de desarrollo
 npm run dev
 
-# Compilar para producción
+# Compilar producción
 npm run build
 
-# Ejecutar linter
+# Linter de código
 npm run lint
 ```

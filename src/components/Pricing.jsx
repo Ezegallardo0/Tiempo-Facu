@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { CheckIcon } from './Icons';
+import { useAuth } from '../context/useAuth';
+import { CheckIcon, CalendarIcon, SettingsIcon, CheckCircleIcon } from './Icons';
 
-export default function Pricing({ onOpenAuth }) {
+export default function Pricing({ onOpenAuth, onNavigate }) {
+  const { user, isAuthenticated } = useAuth();
   const [billingCycle, setBillingCycle] = useState('cuatri'); // 'mensual' or 'cuatri'
 
   const plans = [
@@ -60,6 +62,69 @@ export default function Pricing({ onOpenAuth }) {
       ]
     }
   ];
+
+  if (isAuthenticated && user) {
+    return (
+      <section id="precios" className="pricing-section">
+        <div className="logged-in-plan-card animate-scale-up">
+          <div className="plan-status-chip">
+            <CheckCircleIcon size={14} />
+            <span>SESIÓN ACTIVA • CUENTA UNIVERSITARIA VERIFICADA</span>
+          </div>
+
+          <h2 className="logged-in-plan-title">
+            Tu Cuenta de Estudiante está Activa, {user.name.split(' ')[0]} 🎒
+          </h2>
+
+          <p className="logged-in-plan-sub">
+            Tenés acceso completo a todas las funciones de TiempoFacu configuradas para <strong>{user.university}</strong> ({user.semester}).
+          </p>
+
+          <div className="logged-in-perks-grid">
+            <div className="logged-in-perk-item">
+              <span className="perk-check">✓</span>
+              <div>
+                <strong>Horario y Aulas Ilimitadas</strong>
+                <p>Comisiones, laboratorios y docentes sin límites de materias.</p>
+              </div>
+            </div>
+            <div className="logged-in-perk-item">
+              <span className="perk-check">✓</span>
+              <div>
+                <strong>Calendario Académico Completo</strong>
+                <p>Agendá parciales, recuperatorios y entregas con cuenta regresiva.</p>
+              </div>
+            </div>
+            <div className="logged-in-perk-item">
+              <span className="perk-check">✓</span>
+              <div>
+                <strong>Diagnóstico de Notas por Instancias</strong>
+                <p>Cálculo estricto sin promedios falsos para promoción y regularidad.</p>
+              </div>
+            </div>
+            <div className="logged-in-perk-item">
+              <span className="perk-check">✓</span>
+              <div>
+                <strong>Pizarra Offline de Post-its</strong>
+                <p>Tus notas guardadas en tu navegador para estudiar sin conexión.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="logged-in-plan-actions">
+            <button onClick={() => onNavigate('dashboard')} className="btn-hub-primary large">
+              <CalendarIcon size={18} />
+              <span>Ir a Mi Panel de Cursada</span>
+            </button>
+            <button onClick={() => onNavigate('settings')} className="btn-hub-secondary">
+              <SettingsIcon size={16} />
+              <span>Configuración de Estudiante</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="precios" className="pricing-section">

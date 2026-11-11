@@ -25,15 +25,15 @@ export default function Footer({ onOpenAuth }) {
           </div>
         </div>
 
-        {/* Links Col 1: Herramientas */}
+        {/* Links Col 1: Herramientas del Organizador */}
         <div className="footer-links-col">
-          <h4 className="footer-col-title">Herramientas</h4>
+          <h4 className="footer-col-title">Organizador</h4>
           <ul className="footer-links-list">
-            <li><button onClick={() => scrollTo('calculadora')} className="footer-link-btn">Calculadora de Notas</button></li>
-            <li><button onClick={() => scrollTo('preview')} className="footer-link-btn">Horario Semanal</button></li>
-            <li><button onClick={() => scrollTo('tareas')} className="footer-link-btn">Gestor de Tareas</button></li>
-            <li><button onClick={() => scrollTo('caracteristicas')} className="footer-link-btn">Alertas de Campus</button></li>
-            <li><button onClick={() => scrollTo('precios')} className="footer-link-btn">Planes Universitarios</button></li>
+            <li><button onClick={() => scrollTo('materias')} className="footer-link-btn">Mis Materias & Notas</button></li>
+            <li><button onClick={() => scrollTo('calendario')} className="footer-link-btn">Calendario de Exámenes</button></li>
+            <li><button onClick={() => scrollTo('simulador')} className="footer-link-btn">Simulador de Promoción Real</button></li>
+            <li><button onClick={() => scrollTo('horario')} className="footer-link-btn">Horario Semanal</button></li>
+            <li><button onClick={() => scrollTo('tareas')} className="footer-link-btn">Tareas & Post-its</button></li>
           </ul>
         </div>
 

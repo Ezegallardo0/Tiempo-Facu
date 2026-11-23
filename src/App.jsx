@@ -1,94 +1,117 @@
 import { useState, useEffect } from 'react';
 import { AuthProvider } from './context/AuthContext';
-import Navbar from './components/Navbar';
-import StudentHomeOrganizer from './components/StudentHomeOrganizer';
-import Footer from './components/Footer';
+import { useAuth } from './context/useAuth';
+import { ThemeProvider } from './context/ThemeContext';
+import { AppDataProvider } from './context/AppDataContext';
+import { ToastProvider } from './components/ui/Toast';
 
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import PublicLandingPage from './pages/PublicLandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import ProtectedDashboard from './pages/ProtectedDashboard';
+
+import PageShell from './components/layout/PageShell';
+import DashboardPage from './pages/DashboardPage';
+import MateriasPage from './pages/MateriasPage';
+import TareasPage from './pages/TareasPage';
+import CalendarioPage from './pages/CalendarioPage';
+import ExamenesPage from './pages/ExamenesPage';
+import NotasPage from './pages/NotasPage';
+import EstadisticasPage from './pages/EstadisticasPage';
+import PomodoroPage from './pages/PomodoroPage';
+import ConfiguracionPage from './pages/ConfiguracionPage';
+
 import './App.css';
 
-function MainApp() {
-  const [currentView, setCurrentView] = useState(() => {
-    const hash = window.location.hash.toLowerCase();
-    if (hash === '#login') return 'login';
-    if (hash === '#registro' || hash === '#register') return 'register';
-    if (hash === '#dashboard' || hash === '#panel' || hash === '#app') return 'dashboard';
-    if (hash === '#calendario' || hash === '#calendar') return 'calendar';
-    if (hash === '#configuracion' || hash === '#settings') return 'settings';
-    return 'landing';
-  });
+const HASH_MAP = {
+  '#login': 'login', '#registro': 'register', '#register': 'register',
+  '#dashboard': 'home', '#panel': 'home', '#app': 'home',
+  '#materias': 'materias', '#tareas': 'tareas',
+  '#calendario': 'calendario', '#calendar': 'calendario',
+  '#examenes': 'examenes', '#notas': 'notas',
+  '#estadisticas': 'estadisticas', '#pomodoro': 'pomodoro',
+  '#configuracion': 'configuracion', '#settings': 'configuracion',
+};
 
-  // Sync with browser hash changes
+const VIEW_HASH = {
+  login: '#login', register: '#registro',
+  home: '#dashboard', materias: '#materias', tareas: '#tareas',
+  calendario: '#calendario', examenes: '#examenes', notas: '#notas',
+  estadisticas: '#estadisticas', pomodoro: '#pomodoro', configuracion: '#configuracion',
+};
+
+const APP_VIEWS = ['home', 'materias', 'tareas', 'calendario', 'examenes', 'notas', 'estadisticas', 'pomodoro', 'configuracion'];
+
+function getInitialView() {
+  const hash = window.location.hash.toLowerCase();
+  return HASH_MAP[hash] || 'landing';
+}
+
+function MainApp() {
+  const { isAuthenticated, user } = useAuth();
+  const [currentView, setCurrentView] = useState(getInitialView);
+
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.toLowerCase();
-      if (hash === '#login') setCurrentView('login');
-      else if (hash === '#registro' || hash === '#register') setCurrentView('register');
-      else if (hash === '#dashboard' || hash === '#panel' || hash === '#app') setCurrentView('dashboard');
-      else if (hash === '#calendario' || hash === '#calendar') setCurrentView('calendar');
-      else if (hash === '#configuracion' || hash === '#settings') setCurrentView('settings');
-      else setCurrentView('landing');
+      setCurrentView(HASH_MAP[hash] || 'landing');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const navigate = (view) => {
     setCurrentView(view);
-    if (view === 'login') window.location.hash = '#login';
-    else if (view === 'register') window.location.hash = '#registro';
-    else if (view === 'dashboard') window.location.hash = '#dashboard';
-    else if (view === 'calendar') window.location.hash = '#calendario';
-    else if (view === 'settings') window.location.hash = '#configuracion';
-    else {
+    if (VIEW_HASH[view]) {
+      window.location.hash = VIEW_HASH[view];
+    } else {
       window.location.hash = '#';
       history.pushState('', document.title, window.location.pathname + window.location.search);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 1. LOGIN PAGE VIEW
-  if (currentView === 'login') {
-    return <LoginPage onNavigate={navigate} />;
-  }
+  // Auto-redirect logged-in users from landing to dashboard
+  useEffect(() => {
+    if (isAuthenticated && user && currentView === 'landing') {
+      navigate('home');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, user, currentView]);
 
-  // 2. REGISTER PAGE VIEW
-  if (currentView === 'register') {
-    return <RegisterPage onNavigate={navigate} />;
-  }
+  // --- Auth pages (no layout) ---
+  if (currentView === 'login') return <LoginPage onNavigate={navigate} />;
+  if (currentView === 'register') return <RegisterPage onNavigate={navigate} />;
 
-  // 3. PROTECTED CONTENT (DASHBOARD, CALENDAR, OR SETTINGS)
-  if (currentView === 'dashboard' || currentView === 'settings' || currentView === 'calendar') {
+  // --- Authenticated app (with Sidebar) ---
+  if (isAuthenticated && user && APP_VIEWS.includes(currentView)) {
     return (
-      <ProtectedDashboard
-        onNavigate={navigate}
-        initialTab={
-          currentView === 'settings'
-            ? 'configuracion'
-            : currentView === 'calendar'
-            ? 'calendario'
-            : 'horario'
-        }
-      />
+      <AppDataProvider>
+        <PageShell currentView={currentView} onNavigate={navigate}>
+          {currentView === 'home'          && <DashboardPage onNavigate={navigate} />}
+          {currentView === 'materias'      && <MateriasPage />}
+          {currentView === 'tareas'        && <TareasPage />}
+          {currentView === 'calendario'    && <CalendarioPage />}
+          {currentView === 'examenes'      && <ExamenesPage />}
+          {currentView === 'notas'         && <NotasPage />}
+          {currentView === 'estadisticas'  && <EstadisticasPage />}
+          {currentView === 'pomodoro'      && <PomodoroPage />}
+          {currentView === 'configuracion' && <ConfiguracionPage onNavigate={navigate} />}
+        </PageShell>
+      </AppDataProvider>
     );
   }
 
-  // 4. MAIN STUDENT ORGANIZER HOME VIEW (NO LANDING PAGE MARKETING FLUFF!)
+  // --- Public (landing) ---
   return (
     <div className="tiempofacu-root">
       <Navbar onNavigate={navigate} />
-
-      <main className="main-content-flow">
-        <StudentHomeOrganizer
-          onNavigate={navigate}
-          onOpenAuth={(mode) => navigate(mode === 'login' ? 'login' : 'register')}
-        />
-      </main>
-
+      <PublicLandingPage
+        onOpenAuth={(mode) => navigate(mode === 'login' ? 'login' : 'register')}
+        onNavigate={navigate}
+      />
       <Footer onOpenAuth={(mode) => navigate(mode === 'login' ? 'login' : 'register')} />
     </div>
   );
@@ -96,8 +119,12 @@ function MainApp() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <MainApp />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <ToastProvider>
+          <MainApp />
+        </ToastProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

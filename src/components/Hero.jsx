@@ -5,7 +5,7 @@ export default function Hero({ onOpenAuth, onNavigate }) {
   const { user, isAuthenticated } = useAuth();
 
   const scrollToPreview = () => {
-    const el = document.getElementById('preview');
+    const el = document.getElementById('caracteristicas');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -93,7 +93,7 @@ export default function Hero({ onOpenAuth, onNavigate }) {
             </button>
             <button onClick={scrollToPreview} className="btn-hero-secondary">
               <CalendarIcon size={18} />
-              <span>Ver cómo se ve mi horario</span>
+              <span>Ver cómo funciona</span>
             </button>
           </div>
         )}

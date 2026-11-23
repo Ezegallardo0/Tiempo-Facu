@@ -42,26 +42,50 @@ export default function Navbar({ onNavigate }) {
           </div>
         </a>
 
-        {/* Desktop Navigation Links (Spaced out, clean) */}
+        {/* Desktop Navigation Links (Conditional on auth state) */}
         <nav className="desktop-nav">
-          <button onClick={() => scrollToSection('hoy')} className="nav-item-btn">
-            Hoy
-          </button>
-          <button onClick={() => scrollToSection('materias')} className="nav-item-btn">
-            Mis Materias & Notas
-          </button>
-          <button onClick={() => scrollToSection('calendario')} className="nav-item-btn">
-            Calendario Exámenes
-          </button>
-          <button onClick={() => scrollToSection('simulador')} className="nav-item-btn">
-            Simulador Promo
-          </button>
-          <button onClick={() => scrollToSection('horario')} className="nav-item-btn">
-            Horario Semanal
-          </button>
-          <button onClick={() => scrollToSection('tareas')} className="nav-item-btn">
-            Tareas & Post-its
-          </button>
+          {isAuthenticated && user ? (
+            /* Logged in student navigation */
+            <>
+              <button onClick={() => scrollToSection('hoy')} className="nav-item-btn">
+                Hoy
+              </button>
+              <button onClick={() => scrollToSection('materias')} className="nav-item-btn">
+                Mis Materias & Notas
+              </button>
+              <button onClick={() => scrollToSection('calendario')} className="nav-item-btn">
+                Calendario Exámenes
+              </button>
+              <button onClick={() => scrollToSection('simulador')} className="nav-item-btn">
+                Simulador Promo
+              </button>
+              <button onClick={() => scrollToSection('horario')} className="nav-item-btn">
+                Horario Semanal
+              </button>
+              <button onClick={() => scrollToSection('tareas')} className="nav-item-btn">
+                Tareas & Post-its
+              </button>
+            </>
+          ) : (
+            /* Public visitor navigation */
+            <>
+              <button onClick={() => scrollToSection('preview')} className="nav-item-btn">
+                Horario
+              </button>
+              <button onClick={() => scrollToSection('simulador')} className="nav-item-btn">
+                Simulador Promo
+              </button>
+              <button onClick={() => scrollToSection('tareas')} className="nav-item-btn">
+                Tareas
+              </button>
+              <button onClick={() => scrollToSection('caracteristicas')} className="nav-item-btn">
+                Beneficios
+              </button>
+              <button onClick={() => scrollToSection('faq')} className="nav-item-btn">
+                Preguntas
+              </button>
+            </>
+          )}
         </nav>
 
         {/* Right Actions: STRICTLY CONDITIONAL ON AUTH STATE */}
@@ -144,8 +168,9 @@ export default function Navbar({ onNavigate }) {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="mobile-drawer animate-fade-in">
-          {/* ONLY show Mi Panel when logged in */}
-          {isAuthenticated && user && (
+          {/* Navigation Links based on auth */}
+          {isAuthenticated && user ? (
+            /* Logged in student mobile links */
             <>
               <button
                 onClick={() => {
@@ -155,6 +180,24 @@ export default function Navbar({ onNavigate }) {
                 className="mobile-nav-item highlight-user-panel"
               >
                 📅 Mi Panel de Cursada
+              </button>
+              <button onClick={() => scrollToSection('hoy')} className="mobile-nav-item">
+                ⏰ Clases de Hoy
+              </button>
+              <button onClick={() => scrollToSection('materias')} className="mobile-nav-item">
+                📚 Mis Materias & Notas
+              </button>
+              <button onClick={() => scrollToSection('calendario')} className="mobile-nav-item">
+                🗓️ Calendario de Exámenes
+              </button>
+              <button onClick={() => scrollToSection('simulador')} className="mobile-nav-item">
+                🎓 Simulador de Promoción
+              </button>
+              <button onClick={() => scrollToSection('horario')} className="mobile-nav-item">
+                📅 Horario Semanal
+              </button>
+              <button onClick={() => scrollToSection('tareas')} className="mobile-nav-item">
+                📝 Tareas & Post-its
               </button>
               <button
                 onClick={() => {
@@ -166,26 +209,26 @@ export default function Navbar({ onNavigate }) {
                 ⚙️ Configuración del Estudiante
               </button>
             </>
+          ) : (
+            /* Public visitor mobile links */
+            <>
+              <button onClick={() => scrollToSection('preview')} className="mobile-nav-item">
+                📅 Horario & Widgets
+              </button>
+              <button onClick={() => scrollToSection('simulador')} className="mobile-nav-item">
+                🎓 Simulador de Promoción
+              </button>
+              <button onClick={() => scrollToSection('tareas')} className="mobile-nav-item">
+                📝 Tareas & Entregas
+              </button>
+              <button onClick={() => scrollToSection('caracteristicas')} className="mobile-nav-item">
+                ✨ Beneficios Universitarios
+              </button>
+              <button onClick={() => scrollToSection('faq')} className="mobile-nav-item">
+                ❓ Preguntas Frecuentes
+              </button>
+            </>
           )}
-
-          <button onClick={() => scrollToSection('hoy')} className="mobile-nav-item">
-            ⏰ Clases de Hoy
-          </button>
-          <button onClick={() => scrollToSection('materias')} className="mobile-nav-item">
-            📚 Mis Materias & Notas
-          </button>
-          <button onClick={() => scrollToSection('calendario')} className="mobile-nav-item">
-            🗓️ Calendario de Exámenes
-          </button>
-          <button onClick={() => scrollToSection('simulador')} className="mobile-nav-item">
-            🎓 Simulador de Promoción
-          </button>
-          <button onClick={() => scrollToSection('horario')} className="mobile-nav-item">
-            📅 Horario Semanal
-          </button>
-          <button onClick={() => scrollToSection('tareas')} className="mobile-nav-item">
-            📝 Tareas & Post-its
-          </button>
 
           <div className="mobile-drawer-footer">
             {isAuthenticated && user ? (

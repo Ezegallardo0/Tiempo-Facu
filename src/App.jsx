@@ -63,9 +63,10 @@ function MainApp() {
   }, []);
 
   const navigate = (view) => {
-    setCurrentView(view);
-    if (VIEW_HASH[view]) {
-      window.location.hash = VIEW_HASH[view];
+    const destination = { dashboard: 'home', calendar: 'calendario', settings: 'configuracion' }[view] || view;
+    setCurrentView(destination);
+    if (VIEW_HASH[destination]) {
+      window.location.hash = VIEW_HASH[destination];
     } else {
       window.location.hash = '#';
       history.pushState('', document.title, window.location.pathname + window.location.search);
@@ -112,7 +113,10 @@ function MainApp() {
         onOpenAuth={(mode) => navigate(mode === 'login' ? 'login' : 'register')}
         onNavigate={navigate}
       />
-      <Footer onOpenAuth={(mode) => navigate(mode === 'login' ? 'login' : 'register')} />
+      <Footer
+        onOpenAuth={(mode) => navigate(mode === 'login' ? 'login' : 'register')}
+        onNavigate={navigate}
+      />
     </div>
   );
 }

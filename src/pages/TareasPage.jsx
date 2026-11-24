@@ -90,14 +90,18 @@ function TaskForm({ initial = EMPTY_FORM, subjects, onSave, onCancel }) {
   );
 }
 
-function TaskRow({ task, subject, onEdit, onDelete, onDuplicate }) {
+function TaskRow({ task, subject, onToggle, onEdit, onDelete, onDuplicate }) {
   const today = new Date().toISOString().split('T')[0];
   const isOverdue = !task.done && task.dueDate && task.dueDate < today;
   const doneSubs = (task.subtasks || []).filter(s => s.done).length;
 
   return (
     <div className={`task-row-v2 priority-left-${task.priority} ${task.done ? 'task-done' : ''} ${isOverdue ? 'task-overdue' : ''}`}>
-      <button className={`task-check ${task.done ? 'checked' : ''}`} onClick={() => onToggle(task.id)}>
+      <button
+        className={`task-check ${task.done ? 'checked' : ''}`}
+        onClick={() => onToggle(task.id)}
+        aria-label={task.done ? 'Marcar como pendiente' : 'Marcar como completada'}
+      >
         {task.done && <CheckCircleIcon size={16} />}
       </button>
       <div className="task-row-content">
@@ -189,7 +193,12 @@ export default function TareasPage() {
       {/* List view */}
       {view === 'lista' && (
         filtered.length === 0 ? (
-          <EmptyState emoji="✅" title="Sin tareas" description={search ? 'Ninguna tarea coincide con la búsqueda.' : 'Creá tu primera tarea para empezar.'} action={!search && <button className="btn-primary" onClick={() => setShowAdd(true)}>Crear tarea</button>} />
+          <EmptyState
+            emoji="✅"
+            title="Sin tareas"
+            description={search || filterPriority !== 'todas' || filterStatus !== 'todas' || filterSubject !== 'todas' ? 'No hay tareas que coincidan con los filtros seleccionados.' : 'Creá tu primera tarea para empezar.'}
+            action={!search && filterPriority === 'todas' && filterStatus === 'todas' && filterSubject === 'todas' && <button className="btn-primary" onClick={() => setShowAdd(true)}>Crear tarea</button>}
+          />
         ) : (
           <div className="task-list-v2">
             {filtered.map(t => <TaskRow key={t.id} task={t} subject={getSubject(t.subjectId)} onToggle={handleToggle} onEdit={setEditing} onDelete={setToDelete} onDuplicate={handleDuplicate} />)}

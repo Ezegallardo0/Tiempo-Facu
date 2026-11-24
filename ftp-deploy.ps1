@@ -1,13 +1,34 @@
-$ftpHost   = "185.27.134.11"
+$ftpHost   = $env:INFINITY_FTP_HOST
 $ftpPort   = 21
-$ftpUser   = "if0_43517694"
-$ftpPass   = "Tiempofacu1906"
-$localDist = "D:\Frontend\dist"
+$ftpUser   = $env:INFINITY_FTP_USER
+$localDist = Join-Path $PSScriptRoot "dist"
 $remoteDir = "/htdocs"
+
+if ([string]::IsNullOrWhiteSpace($ftpHost) -or [string]::IsNullOrWhiteSpace($ftpUser)) {
+    Write-Error "Define las variables INFINITY_FTP_HOST e INFINITY_FTP_USER antes de ejecutar el despliegue."
+    exit 1
+}
+
+$requiredFiles = @(
+    (Join-Path $localDist "index.html"),
+    (Join-Path $localDist "favicon.svg"),
+    (Join-Path $localDist "icons.svg")
+)
+if ($requiredFiles | Where-Object { -not (Test-Path $_ -PathType Leaf) }) {
+    Write-Error "No se encontró el build completo en '$localDist'. Ejecuta npm run build primero."
+    exit 1
+}
+if (-not (Test-Path (Join-Path $localDist "assets") -PathType Container)) {
+    Write-Error "No se encontró la carpeta de assets en '$localDist'. Ejecuta npm run build primero."
+    exit 1
+}
+
+$ftpPass = Read-Host "Contraseña FTP (usa una contraseña recién rotada)" -AsSecureString
+$ftpCredentials = [System.Net.NetworkCredential]::new($ftpUser, $ftpPass)
 
 function FtpRequest($uri, $method, $filePath = $null) {
     $req = [System.Net.FtpWebRequest]::Create($uri)
-    $req.Credentials = New-Object System.Net.NetworkCredential($ftpUser, $ftpPass)
+    $req.Credentials = $ftpCredentials
     $req.Method = $method
     $req.UseBinary = $true
     $req.UsePassive = $true
@@ -33,7 +54,7 @@ function FtpRequest($uri, $method, $filePath = $null) {
 function EnsureDir($remotePath) {
     $uri = "ftp://${ftpHost}:${ftpPort}${remotePath}"
     $req = [System.Net.FtpWebRequest]::Create($uri)
-    $req.Credentials = New-Object System.Net.NetworkCredential($ftpUser, $ftpPass)
+    $req.Credentials = $ftpCredentials
     $req.Method = [System.Net.WebRequestMethods+Ftp]::MakeDirectory
     $req.UsePassive = $true
     $req.KeepAlive = $false
@@ -53,7 +74,7 @@ function EnsureDir($remotePath) {
 function UploadFile($localFile, $remotePath) {
     $uri = "ftp://${ftpHost}:${ftpPort}${remotePath}"
     $req = [System.Net.FtpWebRequest]::Create($uri)
-    $req.Credentials = New-Object System.Net.NetworkCredential($ftpUser, $ftpPass)
+    $req.Credentials = $ftpCredentials
     $req.Method = [System.Net.WebRequestMethods+Ftp]::UploadFile
     $req.UseBinary = $true
     $req.UsePassive = $true
@@ -72,20 +93,20 @@ function UploadFile($localFile, $remotePath) {
         Write-Host "  OK ($kb KB): $remotePath" -ForegroundColor Green
         return $true
     } catch {
-        Write-Host "  FALLO: $remotePath — $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host ("  FALLO: {0} - {1}" -f $remotePath, $_.Exception.Message) -ForegroundColor Red
         return $false
     }
 }
 
 # ---- INICIO ----
 Write-Host "`n=== TiempoFacu FTP Deploy ===" -ForegroundColor Magenta
-Write-Host "Host: $ftpHost | Usuario: $ftpUser" -ForegroundColor Gray
+Write-Host "Host: $ftpHost" -ForegroundColor Gray
 
 # 1. Test de conexión
 Write-Host "`n[1/3] Prueba de conexion..." -ForegroundColor Yellow
 $testUri = "ftp://${ftpHost}:${ftpPort}/"
 $testReq = [System.Net.FtpWebRequest]::Create($testUri)
-$testReq.Credentials = New-Object System.Net.NetworkCredential($ftpUser, $ftpPass)
+$testReq.Credentials = $ftpCredentials
 $testReq.Method = [System.Net.WebRequestMethods+Ftp]::ListDirectory
 $testReq.UsePassive = $true
 $testReq.Timeout = 20000
@@ -106,7 +127,6 @@ EnsureDir "$remoteDir/assets"
 Write-Host "`n[3/3] Subiendo archivos..." -ForegroundColor Yellow
 $files = @(
     @{ local = "$localDist\index.html";   remote = "$remoteDir/index.html" },
-    @{ local = "$localDist\.htaccess";    remote = "$remoteDir/.htaccess" },
     @{ local = "$localDist\favicon.svg";  remote = "$remoteDir/favicon.svg" },
     @{ local = "$localDist\icons.svg";    remote = "$remoteDir/icons.svg" }
 )
@@ -122,5 +142,7 @@ foreach ($f in $files) {
 }
 
 Write-Host "`n=== Resultado ===" -ForegroundColor Magenta
-Write-Host "Subidos: $ok  |  Fallidos: $fail" -ForegroundColor $(if ($fail -eq 0) { "Green" } else { "Red" })
+$resultColor = if ($fail -eq 0) { "Green" } else { "Red" }
+Write-Host "Subidos: $ok  |  Fallidos: $fail" -ForegroundColor $resultColor
 Write-Host "URL: http://tiempofacu.page.gd" -ForegroundColor Cyan
+if ($fail -gt 0) { exit 1 }

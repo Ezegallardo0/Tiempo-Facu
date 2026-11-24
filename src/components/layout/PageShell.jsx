@@ -19,7 +19,7 @@ export default function PageShell({ currentView, onNavigate, children }) {
           onNavigate={onNavigate}
           onToggleSidebar={() => setCollapsed(v => !v)}
         />
-        <main className="app-content">
+        <main key={currentView} className="app-content page-transition">
           {children}
         </main>
       </div>

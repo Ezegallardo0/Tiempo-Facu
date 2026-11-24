@@ -216,15 +216,6 @@ export default function AppShowcase() {
                             <p className="expanded-note-text">
                               <strong>💡 Recordatorio para la clase:</strong> {item.notes}
                             </p>
-                            <button
-                              className="btn-open-drive"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                alert('Carpeta de apuntes y resúmenes sincronizada.');
-                              }}
-                            >
-                              📂 Ver apuntes de la materia
-                            </button>
                           </div>
                         )}
                       </div>

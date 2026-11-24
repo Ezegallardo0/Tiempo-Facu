@@ -42,7 +42,8 @@ export default function Sidebar({ currentView, onNavigate, collapsed, onToggle: 
             key={id}
             onClick={() => onNavigate(id)}
             className={`sidebar-nav-item ${currentView === id ? 'active' : ''}`}
-            title={collapsed ? label : undefined}
+            title={label}
+            aria-label={label}
           >
             <Icon size={18} />
             {!collapsed && <span>{label}</span>}
@@ -58,13 +59,20 @@ export default function Sidebar({ currentView, onNavigate, collapsed, onToggle: 
         <button
           onClick={() => onNavigate('configuracion')}
           className={`sidebar-nav-item ${currentView === 'configuracion' ? 'active' : ''}`}
-          title={collapsed ? 'Configuración' : undefined}
+          title="Configuración"
+          aria-label="Configuración"
         >
           <SettingsIcon size={18} />
           {!collapsed && <span>Configuración</span>}
         </button>
 
-        <button onClick={toggleTheme} className="sidebar-nav-item sidebar-theme-btn" title="Cambiar tema">
+        <button
+          onClick={toggleTheme}
+          className="sidebar-nav-item sidebar-theme-btn"
+          title="Cambiar tema"
+          aria-label="Cambiar tema"
+          aria-pressed={theme === 'dark'}
+        >
           {theme === 'dark' ? <SunIcon size={18} /> : <MoonIcon size={18} />}
           {!collapsed && <span>{theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}</span>}
         </button>
@@ -82,7 +90,7 @@ export default function Sidebar({ currentView, onNavigate, collapsed, onToggle: 
                 <span className="sidebar-user-career">{user.career || 'Estudiante'}</span>
               </div>
             )}
-            <button onClick={handleLogout} className="sidebar-logout-btn" title="Cerrar sesión">
+            <button onClick={handleLogout} className="sidebar-logout-btn" title="Cerrar sesión" aria-label="Cerrar sesión">
               <LogOutIcon size={16} />
             </button>
           </div>

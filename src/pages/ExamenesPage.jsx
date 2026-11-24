@@ -114,9 +114,9 @@ export default function ExamenesPage() {
   const today = new Date().toISOString().split('T')[0];
   const getSubject = (id) => subjects.find(s => s.id === id);
 
-  const upcoming = exams.filter(e => e.date >= today).sort((a, b) => a.date.localeCompare(b.date));
-  const past = exams.filter(e => e.date < today).sort((a, b) => b.date.localeCompare(a.date));
-  const _filtered = filterType === 'todos' ? exams : exams.filter(e => e.type === filterType);
+  const filteredExams = filterType === 'todos' ? exams : exams.filter(e => e.type === filterType);
+  const upcoming = filteredExams.filter(e => e.date >= today).sort((a, b) => a.date.localeCompare(b.date));
+  const past = filteredExams.filter(e => e.date < today).sort((a, b) => b.date.localeCompare(a.date));
 
   const handleAdd = (data) => { addExam(data); setShowAdd(false); toast('Examen registrado ✓'); };
   const handleEdit = (data) => { updateExam(editing.id, data); setEditing(null); toast('Examen actualizado ✓'); };
@@ -156,6 +156,13 @@ export default function ExamenesPage() {
 
       {exams.length === 0 ? (
         <EmptyState emoji="🎓" title="Sin exámenes" description="Registrá tus parciales, recuperatorios y finales para hacer seguimiento." action={<button className="btn-primary" onClick={() => setShowAdd(true)}>Agregar primer examen</button>} />
+      ) : filteredExams.length === 0 ? (
+        <EmptyState
+          emoji="🔎"
+          title="No hay exámenes de este tipo"
+          description="Probá con otro filtro para ver los exámenes registrados."
+          action={<button className="btn-secondary" onClick={() => setFilterType('todos')}>Mostrar todos</button>}
+        />
       ) : (
         <>
           {upcoming.length > 0 && (

@@ -9,7 +9,7 @@ import { PlusIcon, TrashIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon } 
 const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const DAY_NAMES = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 const EVENT_TYPES = ['parcial','recuperatorio','final','entrega','clase','evento'];
-const TYPE_COLORS = { parcial: 'lavender', recuperatorio: 'peach', final: 'mint', entrega: 'yellow', clase: 'sky', evento: 'default' };
+const TYPE_COLORS = { parcial: 'lavender', recuperatorio: 'peach', recup: 'peach', final: 'mint', entrega: 'yellow', clase: 'sky', evento: 'default' };
 
 function getMonthGrid(year, month) {
   const firstDay = new Date(year, month, 1);
@@ -52,7 +52,7 @@ export default function CalendarioPage() {
 
   const getSubject = (id) => subjects.find(s => s.id === id);
 
-  const filteredEvents = events.filter(e => filterType === 'todos' || e.type === filterType);
+  const filteredEvents = events.filter(e => filterType === 'todos' || (e.type === 'recup' ? 'recuperatorio' : e.type) === filterType);
   const dayEvents = filteredEvents.filter(e => e.date === selected);
   const upcoming = filteredEvents.filter(e => e.date >= today).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 6);
 

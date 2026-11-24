@@ -22,7 +22,7 @@ export default function LoginPage({ onNavigate }) {
 
     setIsLoading(true);
     setTimeout(() => {
-      const res = login(email, password);
+      const res = login(email, password, rememberMe);
       setIsLoading(false);
       if (res.success) {
         onNavigate('dashboard');
@@ -78,7 +78,10 @@ export default function LoginPage({ onNavigate }) {
           </div>
           <button
             type="button"
-            onClick={handleDemoLogin}
+            onClick={() => {
+              setRememberMe(true);
+              handleDemoLogin();
+            }}
             disabled={isLoading}
             className="btn-demo-fast"
           >
@@ -118,7 +121,7 @@ export default function LoginPage({ onNavigate }) {
               </label>
               <button
                 type="button"
-                onClick={() => alert('Para la cuenta demo la clave es: password123')}
+                onClick={() => setErrorMessage('La recuperación automática no está disponible en esta versión. Si usás la cuenta demo, podés ingresar desde el botón “Entrar con Demo”.')}
                 className="btn-forgot-password"
               >
                 ¿Olvidaste tu contraseña?

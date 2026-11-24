@@ -75,7 +75,11 @@ export default function ConfiguracionPage({ onNavigate }) {
               <p className="config-option-label">Tema de la interfaz</p>
               <p className="config-option-desc">Elegí el modo que más te guste para estudiar.</p>
             </div>
-            <button className={`theme-toggle-btn ${theme === 'dark' ? 'dark' : 'light'}`} onClick={toggleTheme}>
+            <button
+              className={`theme-toggle-btn ${theme === 'dark' ? 'dark' : 'light'}`}
+              onClick={toggleTheme}
+              aria-pressed={theme === 'dark'}
+            >
               {theme === 'dark' ? <><SunIcon size={18} /> Modo claro</> : <><MoonIcon size={18} /> Modo oscuro</>}
             </button>
           </div>

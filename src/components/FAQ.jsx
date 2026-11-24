@@ -11,23 +11,23 @@ export default function FAQ() {
     },
     {
       q: '¿Sirve para mi facultad aunque tenga un sistema propio de correlativas o notas?',
-      a: 'Sí. TiempoFacu fue concebido para la realidad de universidades y terciarios de Latinoamérica y España (UBA, UTN, UNC, UNLP, ITBA, UADE, UNAM, PUC, etc.). Permite configurar escalas del 1 al 10, del 1 al 7 (Chile), del 0 al 20 (Perú), letras o porcentajes, además de ponderaciones personalizadas de TPs y laboratorios.'
+      a: 'Podés registrar materias, comisiones, horarios y notas. El estado académico usa la escala del 1 al 10 (7 o más para promocionar y 4 o más para regularizar); verificá siempre el reglamento oficial de tu institución.'
     },
     {
       q: '¿Qué pasa si en el aula de la facultad no tengo señal ni wifi?',
-      a: 'Diseñamos la app con arquitectura Offline-First. Sabemos que las aulas magnas y los subsuelos de las facultades son agujeros negros de señal. Podés consultar tus horarios, ver en qué aula cursás o anotar recordatorios sin conexión. Cuando volvés a tener señal, se sincroniza automáticamente.'
+      a: 'Tus datos se guardan en el almacenamiento local del navegador. No se sincronizan automáticamente entre dispositivos; usá el mismo navegador y evitá borrar sus datos para conservar tu información.'
     },
     {
       q: '¿Puedo armar grupos para no pelearnos por WhatsApp con los TPs?',
-      a: 'Totalmente. Con la función de TPs Grupales podés crear un tablero de trabajo, asignar qué parte redacta cada integrante y definir entregas internas (ej. "Entrega de borrador 3 días antes de la fecha final del campus"). Nadie se queda con la duda de quién tiene el archivo o el código.'
+      a: 'Por ahora las tareas, materias y apuntes son personales; todavía no hay tableros compartidos ni asignación de tareas a otros integrantes.'
     },
     {
       q: '¿Cómo me llegan las alertas de exámenes para no colapsar a último momento?',
-      a: 'Podés recibir notificaciones en tu celular, computadora y opcionalmente por Telegram o WhatsApp. El sistema usa alertas inteligentes escalonadas: 1 semana antes para empezar el repaso, 48 horas antes para consultar dudas y 3 horas antes del cierre del campus virtual.'
+      a: 'Los exámenes y eventos próximos se muestran en el calendario y el panel. El temporizador Pomodoro puede enviar una notificación del navegador al terminar una sesión si habilitás ese permiso; no se envían alertas por Telegram o WhatsApp.'
     },
     {
-      q: '¿Puedo exportar mi horario para tenerlo de fondo de pantalla en el celular?',
-      a: '¡Sí! Podés descargar tu horario semanal en una imagen estética con colores pasteles, en alta resolución y con el formato exacto para la pantalla de bloqueo de tu teléfono.'
+      q: '¿Puedo exportar mi horario o mis datos?',
+      a: 'La exportación de horarios o datos todavía no está disponible. Tus materias, tareas, eventos, exámenes y apuntes permanecen en el almacenamiento local de este navegador.'
     }
   ];
 

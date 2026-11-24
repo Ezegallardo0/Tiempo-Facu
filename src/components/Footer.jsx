@@ -1,6 +1,6 @@
 import { GraduationCapIcon } from './Icons';
 
-export default function Footer({ onOpenAuth }) {
+export default function Footer({ onOpenAuth, onNavigate }) {
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -20,7 +20,7 @@ export default function Footer({ onOpenAuth }) {
           <p className="footer-brand-desc">
             El espacio pensado para ordenar horarios de cursada, fechas de parciales, entregas de trabajos prácticos y cálculo de notas de promoción.
           </p>
-          <div className="footer-student-heart font-hand" style={{ fontSize: '1.2rem', color: '#5850ec' }}>
+          <div className="footer-student-heart font-hand" style={{ fontSize: '1.2rem' }}>
             Hecho por y para la comunidad universitaria ☕
           </div>
         </div>
@@ -29,11 +29,11 @@ export default function Footer({ onOpenAuth }) {
         <div className="footer-links-col">
           <h4 className="footer-col-title">Organizador</h4>
           <ul className="footer-links-list">
-            <li><button onClick={() => scrollTo('materias')} className="footer-link-btn">Mis Materias & Notas</button></li>
-            <li><button onClick={() => scrollTo('calendario')} className="footer-link-btn">Calendario de Exámenes</button></li>
+            <li><button onClick={() => onOpenAuth('register')} className="footer-link-btn">Mis Materias & Notas</button></li>
+            <li><button onClick={() => onOpenAuth('register')} className="footer-link-btn">Calendario de Exámenes</button></li>
             <li><button onClick={() => scrollTo('simulador')} className="footer-link-btn">Simulador de Promoción Real</button></li>
-            <li><button onClick={() => scrollTo('horario')} className="footer-link-btn">Horario Semanal</button></li>
-            <li><button onClick={() => scrollTo('tareas')} className="footer-link-btn">Tareas & Post-its</button></li>
+            <li><button onClick={() => onOpenAuth('register')} className="footer-link-btn">Horario Semanal</button></li>
+            <li><button onClick={() => onOpenAuth('register')} className="footer-link-btn">Tareas & Post-its</button></li>
           </ul>
         </div>
 
@@ -41,10 +41,9 @@ export default function Footer({ onOpenAuth }) {
         <div className="footer-links-col">
           <h4 className="footer-col-title">Recursos de Estudio</h4>
           <ul className="footer-links-list">
-            <li><a href="#guia" onClick={(e) => { e.preventDefault(); alert('Próximamente: Guía de Técnicas de Estudio & Pomodoro'); }} className="footer-link-btn">Técnicas de Estudio</a></li>
-            <li><a href="#plantillas" onClick={(e) => { e.preventDefault(); alert('Próximamente: Modelos de Resúmenes y Plantillas'); }} className="footer-link-btn">Modelos de Parciales</a></li>
-            <li><a href="#calculadora" onClick={() => scrollTo('calculadora')} className="footer-link-btn">Simulador de Promoción</a></li>
-            <li><a href="#comunidad" onClick={(e) => { e.preventDefault(); alert('Comunidad de Discord con +20.000 estudiantes'); }} className="footer-link-btn">Comunidad de Estudiantes</a></li>
+            <li><button onClick={() => onNavigate('register')} className="footer-link-btn">Temporizador Pomodoro</button></li>
+            <li><button onClick={() => onNavigate('register')} className="footer-link-btn">Apuntes por materia</button></li>
+            <li><button onClick={() => scrollTo('simulador')} className="footer-link-btn">Simulador de Promoción</button></li>
           </ul>
         </div>
 
@@ -53,9 +52,8 @@ export default function Footer({ onOpenAuth }) {
           <h4 className="footer-col-title">Soporte & Legal</h4>
           <ul className="footer-links-list">
             <li><button onClick={() => scrollTo('faq')} className="footer-link-btn">Preguntas Frecuentes</button></li>
-            <li><a href="#soporte" onClick={(e) => { e.preventDefault(); onOpenAuth('soporte'); }} className="footer-link-btn">Contacto de Ayuda</a></li>
-            <li><a href="#privacidad" onClick={(e) => { e.preventDefault(); alert('Tus datos académicos son 100% privados y nunca se comparten con terceros.'); }} className="footer-link-btn">Política de Privacidad</a></li>
-            <li><a href="#terminos" onClick={(e) => { e.preventDefault(); alert('Términos de servicio de TiempoFacu'); }} className="footer-link-btn">Términos de Uso</a></li>
+            <li><button onClick={() => scrollTo('faq')} className="footer-link-btn">Centro de ayuda</button></li>
+            <li><button onClick={() => scrollTo('faq')} className="footer-link-btn">Privacidad y datos</button></li>
           </ul>
         </div>
       </div>

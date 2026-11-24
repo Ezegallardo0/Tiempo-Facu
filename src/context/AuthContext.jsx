@@ -20,6 +20,13 @@ const INITIAL_USERS = [
 ];
 
 export function AuthProvider({ children }) {
+  const [rememberSession, setRememberSession] = useState(() => {
+    try {
+      return Boolean(localStorage.getItem('tiempofacu_current_user'));
+    } catch {
+      return false;
+    }
+  });
   const [user, setUser] = useState(() => {
     try {
       const saved = localStorage.getItem('tiempofacu_current_user');
@@ -50,7 +57,7 @@ export function AuthProvider({ children }) {
   // Save current user session
   useEffect(() => {
     try {
-      if (user) {
+      if (user && rememberSession) {
         localStorage.setItem('tiempofacu_current_user', JSON.stringify(user));
       } else {
         localStorage.removeItem('tiempofacu_current_user');
@@ -58,25 +65,27 @@ export function AuthProvider({ children }) {
     } catch (e) {
       console.error('Error saving current session', e);
     }
-  }, [user]);
+  }, [user, rememberSession]);
 
-  const login = (email, password) => {
+  const login = (email, password, remember = true) => {
     const cleanEmail = email.trim().toLowerCase();
     const cleanPass = password.trim();
 
-    // Check in registered users or allow demo
+    // Match registered users exactly; the demo password is handled separately.
     const found = registeredUsers.find(
-      u => u.email.toLowerCase() === cleanEmail && (u.password === cleanPass || cleanPass === 'password123')
+      u => u.email.toLowerCase() === cleanEmail && u.password === cleanPass
     );
 
     if (found) {
       const { password: _, ...safeUser } = found;
+      setRememberSession(remember);
       setUser(safeUser);
       return { success: true };
     }
 
     // If it's the demo account
     if (cleanEmail === 'demo@estudiante.edu' && (cleanPass === 'password123' || cleanPass === 'demo')) {
+      setRememberSession(remember);
       setUser(DEMO_USER);
       return { success: true };
     }
@@ -87,7 +96,8 @@ export function AuthProvider({ children }) {
     };
   };
 
-  const loginAsDemo = () => {
+  const loginAsDemo = (remember = true) => {
+    setRememberSession(remember);
     setUser(DEMO_USER);
     return { success: true };
   };
@@ -119,12 +129,14 @@ export function AuthProvider({ children }) {
     setRegisteredUsers(prev => [...prev, newUser]);
 
     const { password: _, ...safeUser } = newUser;
+    setRememberSession(true);
     setUser(safeUser);
 
     return { success: true };
   };
 
   const logout = () => {
+    setRememberSession(false);
     setUser(null);
   };
 

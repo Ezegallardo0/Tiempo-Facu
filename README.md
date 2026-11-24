@@ -51,3 +51,22 @@ npm run build
 # Linter de código
 npm run lint
 ```
+
+## Publicar en InfinityFree
+
+El despliegue usa `ftp-deploy.ps1` para subir el contenido de `dist` a `/htdocs`.
+Rotá la contraseña FTP antes de publicar y no la guardes en el repositorio. El
+script solicita la contraseña de forma segura al ejecutarse.
+
+En PowerShell:
+
+```powershell
+$env:INFINITY_FTP_HOST = Read-Host "Host FTP"
+$env:INFINITY_FTP_USER = Read-Host "Usuario FTP"
+npm.cmd run build
+if ($LASTEXITCODE -eq 0) { .\ftp-deploy.ps1 }
+Remove-Item Env:INFINITY_FTP_HOST, Env:INFINITY_FTP_USER -ErrorAction SilentlyContinue
+```
+
+La conexión configurada usa FTP sin TLS. Publicá solo en una red de confianza;
+si el hosting ofrece FTPS, preferilo y habilitá TLS en el script antes de usarlo.
